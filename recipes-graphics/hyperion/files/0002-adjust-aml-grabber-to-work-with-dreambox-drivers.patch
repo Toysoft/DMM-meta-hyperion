@@ -1,0 +1,56 @@
+From 084aa9d01a0a43d44a9e67349646fa7e48f9118b Mon Sep 17 00:00:00 2001
+From: reichi <stephan@reichholf.net>
+Date: Thu, 4 Jul 2019 13:02:26 +0200
+Subject: [PATCH 2/2] adjust aml grabber to work with dreambox drivers
+
+---
+ libsrc/grabber/amlogic/AmlogicGrabber.cpp | 26 +++--------------------
+ 1 file changed, 3 insertions(+), 23 deletions(-)
+
+diff --git a/libsrc/grabber/amlogic/AmlogicGrabber.cpp b/libsrc/grabber/amlogic/AmlogicGrabber.cpp
+index 11cd280..08ea344 100644
+--- a/libsrc/grabber/amlogic/AmlogicGrabber.cpp
++++ b/libsrc/grabber/amlogic/AmlogicGrabber.cpp
+@@ -63,29 +63,7 @@ void AmlogicGrabber::setVideoMode(const VideoMode videoMode)
+ 
+ bool AmlogicGrabber::isVideoPlaying()
+ {
+-	const std::string videoDevice = "/dev/amvideo";
+-
+-	// Open the video device
+-	int video_fd = open(videoDevice.c_str(), O_RDONLY);
+-	if (video_fd < 0)
+-	{
+-		std::cerr << "AMLOGICGRABBER ERROR: Failed to open video device(" << videoDevice << "): " << strerror(errno) << std::endl;
+-		return false;
+-	}
+-
+-	// Check the video disabled flag
+-	int videoDisabled;
+-	if (ioctl(video_fd, AMSTREAM_IOC_GET_VIDEO_DISABLE, &videoDisabled) == -1)
+-	{
+-		std::cerr << "AMLOGICGRABBER ERROR: Failed to retrieve video state from device: " << strerror(errno) << std::endl;
+-		close(video_fd);
+-		return false;
+-	}
+-
+-	// Make sure to close the device after use
+-	close(video_fd);
+-
+-	return videoDisabled == 0;
++	return true;
+ }
+ 
+ int AmlogicGrabber::grabFrame(Image<ColorBgr> & image)
+@@ -107,6 +85,8 @@ int AmlogicGrabber::grabFrame(Image<ColorBgr> & image)
+ 	if (_amlogicCaptureDev == -1)
+ 	{
+ 		_amlogicCaptureDev = open("/dev/amvideocap0", O_RDONLY, 0);
++		if (_amlogicCaptureDev == -1)
++			_amlogicCaptureDev = open("/dev/videograbber", O_RDONLY, 0);
+ 
+ 		// If the device is still not open, there is something wrong
+ 		if (_amlogicCaptureDev == -1)
+-- 
+2.17.1
+
