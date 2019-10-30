@@ -1,3 +1,3 @@
 require hyperion.inc
 
-SRCREV = "8aff3cb9b0b6766294dd10c28979d2826f250763"
+SRCREV = "fb413cd7e8825ffc26925013f57ac93a774f12bc"

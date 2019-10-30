@@ -1,0 +1,11 @@
+[Unit]
+Description=Starts hyperionaml
+Documentation=man:tmpfiles.d(5) man:systemd-tmpfiles(8)
+
+[Timer]
+OnBootSec=1min
+Unit=hyperionaml.service
+
+[Install]
+WantedBy=multi-user.target
+

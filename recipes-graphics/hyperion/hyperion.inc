@@ -21,7 +21,12 @@ SRC_URI = " \
 S = "${WORKDIR}/git"
 
 SYSTEMD_PACKAGES = "${PN}"
-SYSTEMD_SERVICE_${PN} = "hyperion.service"
+
+SYSTEMD_SERVICE_${PN} = "\
+    hyperion.service \
+    hyperionaml.service \
+    hyperionaml.timer \
+"
 
 PACKAGECONFIG[amlogic] = "-DENABLE_AMLOGIC=ON,-DENABLE_AMLOGIC=OFF"
 PACKAGECONFIG[dispmanx] = "-DENABLE_DISPMANX=ON,-DENABLE_DISPMANX=OFF"
@@ -35,14 +40,14 @@ PACKAGECONFIG[ws281x] = "-DENABLE_WS281XPWM=ON,-DENABLE_WS281XPWM=OFF"
 
 PACKAGECONFIG ?= " \
     amlogic \
-    "
+"
 
 EXTRA_OECMAKE += " \
     -DENABLE_QT5=ON \
     -DENABLE_OSX=OFF \
     -DENABLE_TESTS=OFF \
     -DUSE_SYSTEM_PROTO_LIBS=ON \
-    "
+"
 
 DEPENDS = " \
     protobuf \
@@ -64,6 +69,8 @@ RDEPENDS_${PN} = " \
 
 HYPERION_CONFIG_FILE ??= "${S}/config/hyperion.config.json.example"
 
+CONFFILES_${PN} = "${sysconfdir}/hyperion/hyperion.config.json"
+
 FILES_${PN} += " \
     ${systemd_unitdir}/system/hyperion.service \
 "
@@ -71,6 +78,8 @@ FILES_${PN} += " \
 do_install_append() {
     install -d ${D}${systemd_unitdir}/system
     install -m 0644 ${WORKDIR}/init/systemd/hyperion.service ${D}${systemd_unitdir}/system/
+    install -m 0644 ${WORKDIR}/init/systemd/hyperionaml.service ${D}${systemd_unitdir}/system/
+    install -m 0644 ${WORKDIR}/init/systemd/hyperionaml.timer ${D}${systemd_unitdir}/system/
 
     install -d ${D}${sysconfdir}
     install -d ${D}${sysconfdir}/hyperion

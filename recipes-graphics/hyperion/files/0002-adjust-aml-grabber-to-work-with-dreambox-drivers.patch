@@ -1,7 +1,7 @@
-From 084aa9d01a0a43d44a9e67349646fa7e48f9118b Mon Sep 17 00:00:00 2001
+From 1463e29c18d20a2003b948a568aa5dafb465e368 Mon Sep 17 00:00:00 2001
 From: reichi <stephan@reichholf.net>
 Date: Thu, 4 Jul 2019 13:02:26 +0200
-Subject: [PATCH 2/2] adjust aml grabber to work with dreambox drivers
+Subject: [PATCH 2/3] adjust aml grabber to work with dreambox drivers
 
 ---
  libsrc/grabber/amlogic/AmlogicGrabber.cpp | 26 +++--------------------
