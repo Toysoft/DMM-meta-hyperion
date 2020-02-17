@@ -1,14 +1,14 @@
 [Unit]
 Description=Hyperionaml Systemd service
-after=enigma2.service
+Wants=enigma2.service
 Wants=hyperion.service
 
 [Service]
 Type=simple
 User=root
 Group=root
-#UMask=007
-ExecStart=/usr/bin/hyperion-aml -f 20
+UMask=007
+ExecStart=/usr/bin/hyperion-aml -f 10 --width 160 --height 160
 ExecReload=/bin/kill -HUP $MAINPID
 Restart=on-failure
 TimeoutStopSec=10

@@ -1,4 +1,4 @@
-SUMMARY = "Hyperion is an opensource 'AmbiLight' implementation controlled using the RaspBerry Pi"
+SUMMARY = "Hyperion is an opensource 'AmbiLight' implementation controlled using the Dreambox One"
 DESCRIPTION = "Hyperion is an opensource 'AmbiLight' implementation"
 HOMEPAGE = "https://github.com/hyperion-project/hyperion"
 
@@ -15,6 +15,7 @@ SRC_URI = " \
     gitsm://github.com/hyperion-project/hyperion.git;protocol=https \
     file://0001-fix-system-protobuf.patch \
     file://0002-adjust-aml-grabber-to-work-with-dreambox-drivers.patch \
+    file://0003-adjust-example-config-for-dreamboxes.patch \
     file://init \
 "
 
@@ -69,7 +70,7 @@ RDEPENDS_${PN} = " \
 
 HYPERION_CONFIG_FILE ??= "${S}/config/hyperion.config.json.example"
 
-CONFFILES_${PN} = "${sysconfdir}/hyperion/hyperion.config.json"
+CONFFILES_${PN} = "${sysconfdir}/hyperion/hyperion.config.json.example"
 
 FILES_${PN} += " \
     ${systemd_unitdir}/system/hyperion.service \
@@ -83,5 +84,5 @@ do_install_append() {
 
     install -d ${D}${sysconfdir}
     install -d ${D}${sysconfdir}/hyperion
-    install ${HYPERION_CONFIG_FILE} ${D}${sysconfdir}/hyperion/hyperion.config.json
+    install ${HYPERION_CONFIG_FILE} ${D}${sysconfdir}/hyperion/hyperion.config.json-example
 }
